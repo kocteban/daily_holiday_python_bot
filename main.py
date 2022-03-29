@@ -17,11 +17,20 @@ def send_funny_pic(message, month_name=current_month_name,
 
 
 def create_date_numbers(message):
-    date_num = message.text.split()[0]
-    month_num = message.text.split()[1]
-    datetime_object = datetime.datetime.strptime(month_num, "%m")
-    full_month_name = datetime_object.strftime("%B")
-    send_funny_pic(message, month_name=full_month_name, day_num=date_num)
+    try:
+        date_num = message.text.split()[0]
+        date_num = date_num.replace('0', '')
+        month_num = message.text.split()[1]
+        date_num = date_num.replace('0', '')
+        datetime_object = datetime.datetime.strptime(month_num, "%m")
+        full_month_name = datetime_object.strftime("%B")
+    except:
+        bot.send_message(message.chat.id, 'Извини, я тебя не понял')
+    try:
+        send_funny_pic(message, month_name=full_month_name, day_num=date_num)
+    except:
+        bot.send_message(message.chat.id,
+                         'Извини, у меня пока нет картинки на такой день')
 
 
 @bot.message_handler(commands=['start'])
@@ -42,7 +51,8 @@ def get_text_message(message):
 
     elif message.text.lower() == 'я хочу ввести дату праздника сам':
         send = bot.send_message(message.chat.id,
-                                'Введите дату в формате: "День Месяц" (17 05 или 5 07)')
+                                'Введите дату в формате: "День Месяц" (17 05 '
+                                'или 05 07)')
 
         bot.register_next_step_handler(send, create_date_numbers)
 
