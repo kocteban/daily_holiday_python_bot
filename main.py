@@ -4,7 +4,7 @@ import telebot
 from telebot import types
 import datetime
 
-bot = telebot.TeleBot('5236914607:AAH-9RQudTWP7K5UfYwhXT2RvEK9q0fdWMg')
+bot = telebot.TeleBot() #insert your key
 
 current_month_name = datetime.datetime.now().strftime("%B")
 current_day_num = datetime.datetime.now().strftime("%d")
